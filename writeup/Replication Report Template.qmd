@@ -1,6 +1,6 @@
 ---
-title: "Replication of Study X by Sample & Sample (20xx, Psychological Science)"
-author: "Replication Author[s] (contact information)"
+title: "Replication of Experiment 1 by Child, Oakhill, & Garnham (2018, Language, Cognition and Neuroscience)"
+author: "Verity Lua (vyqlua@stanford.edu)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
   html:
@@ -12,7 +12,13 @@ format:
 
 ## Introduction
 
-[No abstract is needed.]  Each replication project will have a straightforward, no frills report of the study and results.  These reports will be publicly available as supplementary material for the aggregate report(s) of the project as a whole.  Also, to maximize project integrity, the intro and methods will be written and critiqued in advance of data collection.  Introductions can be just 1-2 paragraphs clarifying the main idea of the original study, the target finding for replication, and any other essential information.  It will NOT have a literature review -- that is in the original publication. You can write both the introduction and the methods in past tense.  
+Does the ease of processing emotional information differ based on the emotional valence of the information and the perspective by which the emotional information is written? In Study 1 of the [paper](https://github.com/psych251/child2018_rescue/blob/main/original_paper/original_paper.pdf) "You're the emotional one: the role of perspective for emotion processing in reading comprehension", Child, Oakhill, & Garnham (2018) found that participants read positively-valenced passages faster when they were written from a personal perspective compared to when they were written from an onlooker's perspective. In contrast, there were no difference in reading times for negatively-valenced passages written from either perspective. However, a [replication study](https://github.com/psych251/child2018/blob/master/writeup/Child-et-al--2018--Replication-Report.html) done by Bunderson (2020) did not find a significant difference in reading time between positively-valenced passages written from a personal perspective and positively-valenced passages written from an onlooker's perspective.
+
+Hence, [the current project](https://github.com/psych251/child2018_rescue) seeks to examine the possible reason(s) why the findings failed to replicate. As a researcher in the field of affective science, how people process emotions is something that I am particularly interested in. Furthermore, as a social psychologist, I enjoy uncovering thinking about social factors that could explain why certain effects may be more pronounced in certain contexts and samples compared to others. I suspect that the effect found by Child et al. (2018) may be moderated by educational status, whereby the effect may more pronounced among highly educated individuals who may have greater exposure to reading and writing personal anecdotes throughout their educational journey. Of importance, while Child et al. (2018) carried out their experiment using a sample from the subject pool of the University of Sussex, Bunderson (2020) utilized a sample recruited from Amazon Mturk. Thus, educational status may be a potential variable that could allow us to understand the conflicting findings.
+
+The current project will utilize the stimuli (24 emotionally-valenced passages) [as in the original study](https://github.com/psych251/child2018_rescue/blob/main/original_paper/supplemental_materials.docx). Alike the replication study by Bunderson (2020), all stimuli and questionnaires will be administered through Qualtrics and participants will be recruited online through the crowdsourcing platform, Amazon Mturk. Participants will additionally asked to report the number of years of formal education they have had. 
+
+The largest challenge for the current project is in estimating how large the possible moderation effect will be. Given that the moderation effect is a novel proposition, I may inaccurately estimate the true effect of the moderation and thus fail to find a statistically significant effect even if there was a true effect. Another possible challenge lies in the data analysis. Specifically, the main analysis used in the original study by Child et al. (2018) was a linear mixed effects (LME) model, while the main finding that Bunderson (2020) attempted to replicate was the t-test result showing a significant difference in reading time between the positively-valenced passages that were written from different perspectives (i.e., the simple effect within positively-valenced passages). It may be possible that the LME could indicate a significant interaction effect between emotional valence and perspective, but no simple effect (as in the replication study). In such a case, it would be difficult to determine if the replication should be considered a successful one or not.
 
 
 ## Summary of prior replication attempt
@@ -64,51 +70,4 @@ You can comment this section out prior to final report with data collection.
   Sample size, demographics, data exclusions based on rules spelled out in analysis plan
 
 #### Differences from pre-data collection methods plan
-  Any differences from what was described as the original plan, or “none”.
-
-
-## Results
-
-
-### Data preparation
-
-Data preparation following the analysis plan.
-	
-```{r include=F}
-### Data Preparation
-
-#### Load Relevant Libraries and Functions
-
-#### Import data
-
-#### Data exclusion / filtering
-
-#### Prepare data for analysis - create columns etc.
-```
-
-### Results of control measures
-
-How did people perform on any quality control checks or positive and negative controls? 
-
-### Confirmatory analysis
-
-The analyses as specified in the analysis plan.  
-
-*Three-panel graph with original, 1st replication, and your replication is ideal here*
-
-### Exploratory analyses
-
-Any follow-up analyses desired (not required).  
-
-## Discussion
-
-## Mini meta analysis
-Combining across the original paper, 1st replication, and 2nd replication, what is the aggregate effect size? 
-
-### Summary of Replication Attempt
-
-Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
-
-### Commentary
-
-Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+  Any differences from what was described as the original plan, or b
