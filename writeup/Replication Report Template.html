@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Verity Yu Qing Lua (vyqlua@stanford.edu)">
-<meta name="dcterms.date" content="2023-10-08">
+<meta name="author" content="Verity Lua (vyqlua@stanford.edu)">
+<meta name="dcterms.date" content="2023-10-22">
 
 <title>Replication of Experiment 1 by Child, Oakhill, &amp; Garnham (2018, Language, Cognition and Neuroscience)</title>
 <style>
@@ -22,6 +22,69 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 
 
@@ -2538,10 +2601,43 @@ vertical-align: -.125em;
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#summary-of-prior-replication-attempt" id="toc-summary-of-prior-replication-attempt" class="nav-link" data-scroll-target="#summary-of-prior-replication-attempt">Summary of prior replication attempt</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#power-analysis" id="toc-power-analysis" class="nav-link" data-scroll-target="#power-analysis">Power Analysis</a></li>
+  <li><a href="#planned-sample" id="toc-planned-sample" class="nav-link" data-scroll-target="#planned-sample">Planned Sample</a></li>
+  <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a></li>
+  <li><a href="#procedure" id="toc-procedure" class="nav-link" data-scroll-target="#procedure">Procedure</a></li>
+  <li><a href="#controls" id="toc-controls" class="nav-link" data-scroll-target="#controls">Controls</a></li>
+  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis Plan</a></li>
+  <li><a href="#differences-from-original-study-and-1st-replication" id="toc-differences-from-original-study-and-1st-replication" class="nav-link" data-scroll-target="#differences-from-original-study-and-1st-replication">Differences from Original Study and 1st replication</a></li>
+  <li><a href="#methods-addendum-post-data-collection" id="toc-methods-addendum-post-data-collection" class="nav-link" data-scroll-target="#methods-addendum-post-data-collection">Methods Addendum (Post Data Collection)</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a></li>
+  <li><a href="#results-of-control-measures" id="toc-results-of-control-measures" class="nav-link" data-scroll-target="#results-of-control-measures">Results of control measures</a></li>
+  <li><a href="#confirmatory-analysis" id="toc-confirmatory-analysis" class="nav-link" data-scroll-target="#confirmatory-analysis">Confirmatory analysis</a></li>
+  <li><a href="#exploratory-analyses" id="toc-exploratory-analyses" class="nav-link" data-scroll-target="#exploratory-analyses">Exploratory analyses</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#mini-meta-analysis" id="toc-mini-meta-analysis" class="nav-link" data-scroll-target="#mini-meta-analysis">Mini meta analysis</a>
+  <ul class="collapse">
+  <li><a href="#summary-of-replication-attempt" id="toc-summary-of-replication-attempt" class="nav-link" data-scroll-target="#summary-of-replication-attempt">Summary of Replication Attempt</a></li>
+  <li><a href="#commentary" id="toc-commentary" class="nav-link" data-scroll-target="#commentary">Commentary</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -2556,14 +2652,14 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Verity Yu Qing Lua (vyqlua@stanford.edu) </p>
+             <p>Verity Lua (vyqlua@stanford.edu) </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 8, 2023</p>
+      <p class="date">October 22, 2023</p>
     </div>
   </div>
   
@@ -2576,59 +2672,128 @@ vertical-align: -.125em;
 <!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Does the ease of processing emotional information differ based on the emotional valence of the information and the perspective by which the emotional information is written? In Study 1 of the <a href="https://github.com/psych251/child2018_rescue/blob/main/original_paper/original_paper.pdf">paper</a> “You’re the emotional one: the role of perspective for emotion processing in reading comprehension”, Child, Oakhill, &amp; Garnham (2018) found that participants read positively-valenced passages faster when they were written from a personal perspective compared to when they were written from an onlooker’s perspective. In contrast, there were no difference in reading times for negatively-valenced passages written from either perspective. However, a <a href="https://github.com/psych251/child2018/blob/master/writeup/Child-et-al--2018--Replication-Report.html">replication study</a> done by Bunderson (2020) did not find a significant difference in reading time between positively-valenced passages written from a personal perspective and positively-valenced passages written from an onlooker’s perspective.</p>
+<p>Does the ease of processing emotional information differ based on the emotional valence of the information and the perspective by which the emotional information is written? In Study 1 of the <a href="https://github.com/psych251/child2018_rescue/blob/main/original_paper/original_paper.pdf">paper</a> “You’re the emotional one: the role of perspective for emotion processing in reading comprehension”, Child, Oakhill, &amp; Garnham (2018) found that participants read positively-valenced passages faster when they were written from a personal (second person’s) perspective compared to when they were written from an onlooker’s (third person’s) perspective. In contrast, there were no difference in reading times for negatively-valenced passages written from either perspective. However, a <a href="https://github.com/psych251/child2018/blob/master/writeup/Child-et-al--2018--Replication-Report.html">replication study</a> done by Bunderson (2020) did not find a significant difference in reading time between positively-valenced passages written from a personal perspective and positively-valenced passages written from an onlooker’s perspective.</p>
 <p>Hence, <a href="https://github.com/psych251/child2018_rescue">the current project</a> seeks to examine the possible reason(s) why the findings failed to replicate. As a researcher in the field of affective science, how people process emotions is something that I am particularly interested in. Furthermore, as a social psychologist, I enjoy uncovering thinking about social factors that could explain why certain effects may be more pronounced in certain contexts and samples compared to others. I suspect that the effect found by Child et al. (2018) may be moderated by educational status, whereby the effect may more pronounced among highly educated individuals who may have greater exposure to reading and writing personal anecdotes throughout their educational journey. Of importance, while Child et al. (2018) carried out their experiment using a sample from the subject pool of the University of Sussex, Bunderson (2020) utilized a sample recruited from Amazon Mturk. Thus, educational status may be a potential variable that could allow us to understand the conflicting findings.</p>
-<p>The current project will utilize the stimuli (24 emotionally-valenced passages) <a href="https://github.com/psych251/child2018_rescue/blob/main/original_paper/supplemental_materials.docx">as in the original study</a>. Alike the replication study by Bunderson (2020), all stimuli and questionnaires will be administered through Qualtrics. In light of the failed replication attempt based on a sample of 40 participants, a larger sample will be used. Participants will be recruited online through the crowdsourcing platform, Prolific. Participants will additionally asked to report the number of years of formal education they have had to facilitate exploratory analyses on the possible moderating role of educational status.</p>
+<p>The current project will utilize the stimuli (24*2 emotionally-valenced passages) <a href="https://github.com/psych251/child2018_rescue/blob/main/original_paper/supplemental_materials.pdf">as in the original study</a>. Alike the replication study by Bunderson (2020), all stimuli and questionnaires will be administered through Qualtrics. In light of the failed replication attempt based on a sample of 40 participants, a larger sample will be used. Participants will be recruited online through the crowdsourcing platform, Prolific. Participants will additionally asked to report the number of years of formal education they have had to facilitate exploratory analyses on the possible moderating role of educational status.</p>
 <p>One challenge of the current project lies in the data analysis. Specifically, the main analysis used in the original study by Child et al. (2018) was a linear mixed effects (LME) model, while the main finding that Bunderson (2020) attempted to replicate was the t-test result showing a significant difference in reading time between the positively-valenced passages that were written from different perspectives (i.e., the simple effect within positively-valenced passages). It may be possible that the LME could indicate a significant interaction effect between emotional valence and perspective, but no simple effect (as in the replication study). In such a case, it would be difficult to determine if the replication should be considered a successful one or not. Additionally, another challenge for the current project is in estimating how large the possible moderation effect will be. Given that the moderation effect is a novel proposition, I may inaccurately estimate the true effect of the moderation and thus fail to find a statistically significant effect even if there was a true effect.</p>
 </section>
 <section id="summary-of-prior-replication-attempt" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-prior-replication-attempt">Summary of prior replication attempt</h2>
-<p>Based on the prior write-up, describe any differences between the original and 1st replication in terms of methods, sample, sample size, and analysis. Note any potential problems such as exclusion rates, noisy data, or issues with analysis.</p>
+<p>There were several differences in the replication attempt done by Bunderson and the original study done by Child and colleagues that should be discussed. Firstly, as noted above, while Child and colleagues utilized a sample of college students (aged between 18 and 33), the replication study by Bunderson recruited participants (aged between 24 and 70) that may or may not have been to college. Given that college students may have greater exposure to reading and writing personal anecdotes relative to the general population, the difference in the samples’ educational background may account for why the main finding that individuals read quicker when positive stories are presented in the first-person perspective was not replicated.</p>
+<p>Secondly, there were some differences in the materials used in the studies. While the main stimuli (the emotionally-valenced passages) and the filler passages presented to participants were similar across both studies, the instructions for the tasks, the passages used for the practice trials, and the phrasing of the items used to examine participants’ emotional state may have been slightly different given that Bunderson was unable to obtain these materials from the original authors. However, as the main effect we are interested in replicating is the reading time for the emotionally-valenced passages (for which were similar across both studies), I posit that these differences were unlikely to have a substantial impact on the findings of the replication study done by Bunderson.</p>
+<p>Thirdly, the replication study and the original study differed in the setting by which the studies were conducted. As a result, the subsequent exclusion criteria used in both studies were also different. In the original study, participants completed the study in-person on a computer using the E-Prime software. However, in the replication study, participants completed the study at their own time online using the online survey platform, Qualtrics. This is notable given that the key dependent measure (reading time) may be influenced by how immersed individuals are in the task and how conducive their physical surroundings are. Bunderson argued that external distraction was likely to be more present when a survey is completed in a participant’s personal setting rather than in a laboratory (for an alternative perspective, see <a href="https://doi.org/10.3758/s13428-015-0578-z">Hauser &amp; Schwarz, 2016</a>). Thus, to account for this, Bunderson employed two additional exclusion criteria for their data. First, Bunderson excluded participants who had reading times less than 400ms for more than half of the trials based on the assumption that these participants were likely to have been using bots or were providing ‘key-smashing’ responses. Second, reading times that were longer than 15 seconds on any individual sentence of the emotionally-valenced passages were excluded based on the assumption that participants were distracted during that particular trial. While these differences in exclusion criteria may have influenced the replication of the original study, I posit that the additional exclusion criteria imposed by Bunderson were justified. Nonetheless, to examine if the results were influenced by these differences in exclusion criteria, sensitivity analyses will be conducted to ensure that the conclusions of the current replication study do not change as a result of these additional exclusion criteria.</p>
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <section id="power-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="power-analysis">Power Analysis</h3>
-<p>Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size. Considerations of feasibility for selecting planned sample size.</p>
+<p>[not done] Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size. Considerations of feasibility for selecting planned sample size.</p>
 <p>How much power does your planned sample have for original effect? For an attenuated effect that is half the size of the original?</p>
 <p>(If power analysis is not possible or precise, discuss more fully how you determined a sample size that would be sufficient for rescue.)</p>
 </section>
 <section id="planned-sample" class="level3">
 <h3 class="anchored" data-anchor-id="planned-sample">Planned Sample</h3>
-<p>Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.</p>
+<p>In line with the original sample used in the original study by Child et al. (2018), participants will be limited to include only native English speakers over 18 years of age without a diagnosed reading disorder. Participants will be recruited via Prolific and these inclusion criteria will be listed in the Prolific task description. Screening questions will also be added at the very start of the Qualtrics survey such that participants who are not native English speakers, are below 18 years of age, or have been diagnosed reading disorder will have their surveys terminated.</p>
+<p>Additionally, while Bunderson (2020) used a sample of American participants, the current replication study will use a sample of British participants (as in Child et al.’s original study) to mimic the original study as closely as possible. This criteria will be enforced using Prolific’s in-built geographic filter, and through a screener question at the start of the Qualtrics survey. Individuals who indicate that they were not British will have their surveys terminated and not be allowed to participate in the study.</p>
 </section>
 <section id="materials" class="level3">
 <h3 class="anchored" data-anchor-id="materials">Materials</h3>
-<p>All materials - can quote directly from original article - just put the text in quotations and note that this was followed precisely. Or, quote directly and just point out exceptions to what was described in the original article.</p>
+<section id="emotionally-valenced-passages" class="level4">
+<h4 class="anchored" data-anchor-id="emotionally-valenced-passages">Emotionally-Valenced Passages</h4>
+<p>In line with the original experiment, participants were presented with 48 text passages (24 unique passages, each with two versions: one written in a personal, second person perspective and the other written in an onlookers’, third person perspective). The passages were obtained from the <a href="https://github.com/psych251/child2018_rescue/blob/main/original_paper/supplemental_materials.pdf">supplemental materials</a> uploaded by the authors of the original study. Each passage was 5-9 sentences long and each passage ended with an explicit emotion word that matched the content of the passage. Passages differed by both emotional valence (negative versus positive) and perspective (personal versus onlooker). Thus, of the 48 passages: - 12 were negatively-valenced, written in an personal (second-person) perspective; - 12 were positively-valenced, written in an personal (second-person) perspective; - 12 were negatively-valenced, written in an onlooker’s (third-person) perspective; - and 12 were positively-valenced, written in an onlooker’s (third-person) perspective.</p>
+<p>The passages were counterbalanced by perspective, valence and gender of the character for all participants.</p>
+</section>
+<section id="distractor-passages" class="level4">
+<h4 class="anchored" data-anchor-id="distractor-passages">Distractor Passages</h4>
+<p>Participants were also presented with 24 distractor passages to conceal the purpose of the study. These distractor passages were obtained by Bunderson from the senior author of the paper. Distractor passages were of comparable lengths to the main emotionally-valenced passages, and were written in third (“he/she”) or first (“I”) person perspectives. Of importance, in contrast to the experimental items, “the final sentence of the fillers did not contain an explicit emotion and the texts were therefore more ambiguous” (Child et al., 2020; p.882).</p>
+</section>
 </section>
 <section id="procedure" class="level3">
 <h3 class="anchored" data-anchor-id="procedure">Procedure</h3>
-<p>Can quote directly from original article - just put the text in quotations and note that this was followed precisely. Or, quote directly and just point out exceptions to what was described in the original article.</p>
+<p>The stimuli were presented on Qualtrics, an online survey platform. As in the original experiment by Child et al. (2018), the sentences were presented on white background with font size 24 and black font.</p>
+<p>At the very beginning of the study, participants were presented with an introduction and three practice passages created by Bunderson (the original materials for these particular materials were not accessible). To ensure the validity of the introduction and trial passages, “Feedback was obtained during piloting to ensure that the instructions and practice trials prepared participants for the task” (Bunderson, 2020).</p>
+<p>After completing the trial, the main text passages (the emotionally-valenced and distractor passages) were presented sentence by sentence to participants. Passages appeared in random orders for each participant and the time participants took to read each sentence was recorded. As in the original study, “After having read the final sentence, participants typed in their self-rating i.e. the number rating their own emotion” (Child et al., 2020; p.882). Specifically, in line with Bunderson’s replication study, participants were asked to “<em>Please rate your current emotional state.</em>” on a 10-point Likert scale (1 = <em>Negative</em>, 10 = <em>Positive</em>). After reporting their current emotional state, the next trial began after a two second break.</p>
+<p>After all passages were presented, participants were asked to report their years of formal education at the very end of the survey. This was done to facilitate the novel hypothesis that educational status would moderate the relationship between the perspective by which the passage was written and reading times of positively-valence passages. Specifically, I sought to examine if the effect of perspective on reading time would be larger with increasing years of formal education.</p>
 </section>
 <section id="controls" class="level3">
 <h3 class="anchored" data-anchor-id="controls">Controls</h3>
-<p>What attention checks, positive or negative controls, or other quality control measures are you adding so that a (positive or negative) result will be more interpretable?</p>
+<p>As in the original study by Child et al. (2018) and as in Bunderson’s (2020) replication study, “outliers 2.5 standard deviations below or above the mean reading times per sentence, were removed for each participant” (Child et al., 2018; p.882). Additionally, in line with Bunderson (2020), participants who had reading times less than 400ms for more than half of the trials and individual reading times that were longer than 15 seconds on any individual sentence of the emotionally-valenced passages were excluded from analysis. This is to ensure that particiapnts retained for analyses were not using bots and to ensure that reading times were not skewed by short moments of distraction.</p>
+<p>However, to mimic the original study by Child et al. (2018) as closely as possible, sensitivity analyses will be conducted including participants who had reading times less than 400ms for more than half of the trials and including reading times that were greater than 15 seconds. Unless otherwise stated, the results presented were similar including these participants and data points.</p>
 </section>
 <section id="analysis-plan" class="level3">
 <h3 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h3>
-<p>Can also quote directly, though it is less often spelled out effectively for an analysis strategy section. The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.</p>
-<p><strong>Clarify key analysis of interest here</strong> You can also pre-specify additional analyses you plan to do.</p>
+<p>As in Child et al. (2018; p.882), “The reading times were analysed using linear mixed effect (LME) models. A natural log transformation was performed in order to normalise the data. We accounted for length effects of different passages by regressing (log) reading times against the number of characters per sentence. These regressions were calculated by participant. As a result, log-residual reading times with a mean (intercept) of zero (per participant) were entered into the analyses… Perspective as well as valence were included as fixed-effects into the analysis using deviation coding. In addition, we also included participants and items with random intercepts and slopes into the mixed models. For parameter reports, we used the default restricted maximum likelihood estimations provided by the lme4 package”. Based on Akaike Information Criterion (AIC) scores, Child et al. (2018) found that the model including random intercepts of participants and items, but not random slopes, showed the best fit. Thus, the current analysis will utilize a model with random intercepts for participants and items but without random slopes as in the original study, unless the model fails to converge and needs to be further simplified. For this analysis, the current replication sought to examine if there would be an interaction between valence and perspective, whereby differences in reading times based on perspective were dissimilar for positively- and negatively-valenced passages.</p>
+<p>The main result that the present study seeks to replicate is the finding that “reading times were faster for passages that were written from a personal perspective than from an onlooker perspective” (Child et al., 2018; p.883). To test replicate this finding, a pairwise comparison will be conducted to examine if within the positively-valenced passages, reading times differed by the perspective the passages were written in.</p>
+<p>An exploratory analysis will also be conducted to examine if educational status would affect the strength of the relationship between perspective of passage and reading time observed within the positively-valenced passages. LME will be used given that participants’ educational status is a between-persons variable while the perspective of passages was a repeated measure within participants. As in the LME analysis described above, random intercepts of participants and items will be included but not random slopes.</p>
+<p>All analyses will be conducted in R version 4.2.2 (<a href="https://CRAN.R-project.org/package=rlang">Henry &amp; Wickham, 2023</a>). LME will be conducted using <em>lme4</em> version 1.1-33 (<a href="https://doi.org/10.18637/jss.v067.i01">Bates et al., 2015</a>) and <em>lmerTest</em> version 3.1-3 (<a href="https://doi.org/10.18637/jss.v082.i13">Kuznetsova et al., 2017</a>). In line with the original study, pairwise tests will be conducted using the lsmeans package version 2.30-0 (<a href="https://doi.org/10.18637/jss.v069.i01">Lenth, 2016</a>).</p>
 </section>
 <section id="differences-from-original-study-and-1st-replication" class="level3">
 <h3 class="anchored" data-anchor-id="differences-from-original-study-and-1st-replication">Differences from Original Study and 1st replication</h3>
-<p>Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study. The goal, of course, is to minimize those differences, but differences will inevitably occur. Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.</p>
+<p>The current replication study sought to minimize the differences from the original study as much as possible. Nonetheless, there are three differences worth nothing. Firstly, like Bunderson (2020), the instructions, trial passages, and item used for self-reported emotion may be dissimilar from the original Child et al. (2018) study given that these materials were not attainable from the original authors. The current work utilizes the materials created by Bunderson, who had re-created these materials based on the descriptions provided in the original paper, and had piloted these materials beforehand. It is expected that these changes will have minimal impact on the findings of the study given that they are not the key measures and stimuli of interest.</p>
+<p>Secondly, the current replication study utilized a British sample so as to minimize the differences between the current study and the original study, while Bunderson’s replication used an American sample. These differences in sample nationality are not expected to have a substantial impication on the findings however, given that the original study expects the effects to be applicable for readers in general and not just readers in a specific country.</p>
+<p>Lastly, the current study followed the exclusion criteria outlined by Bunderson (2020), which included two additional exclusion criteria compared to the original study done by Child et al. (2018) as outlined above. To ensure that these differences in exclusion criteria did not influence the findings, sensitivity analyses were conducted whereby only the exclusion criteria in the original Child et al. (2018) study was implemented. Unless otherwise stated, there were no differences in the conclusions drawn after including these participants and data points.</p>
 </section>
 <section id="methods-addendum-post-data-collection" class="level3">
 <h3 class="anchored" data-anchor-id="methods-addendum-post-data-collection">Methods Addendum (Post Data Collection)</h3>
-<p>You can comment this section out prior to final report with data collection.</p>
+<p>[not updated] You can comment this section out prior to final report with data collection.</p>
 <section id="actual-sample" class="level4">
 <h4 class="anchored" data-anchor-id="actual-sample">Actual Sample</h4>
-<p>Sample size, demographics, data exclusions based on rules spelled out in analysis plan</p>
+<p>[not updated] Sample size, demographics, data exclusions based on rules spelled out in analysis plan</p>
 </section>
 <section id="differences-from-pre-data-collection-methods-plan" class="level4">
 <h4 class="anchored" data-anchor-id="differences-from-pre-data-collection-methods-plan">Differences from pre-data collection methods plan</h4>
-<p>Any differences from what was described as the original plan, or b</p>
+<p>[not updated] Any differences from what was described as the original plan, or “none”.</p>
 </section>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation">Data preparation</h3>
+<p>[prose description not updated] Data preparation following the analysis plan.</p>
+</section>
+<section id="results-of-control-measures" class="level3">
+<h3 class="anchored" data-anchor-id="results-of-control-measures">Results of control measures</h3>
+<p>There were three exclusion criteria used. Firstly, participants (<em>n</em> = ?? participants) who had reading times of less then 400ms for more than half the trials were excluded from analysis. Secondly, reading times that were longer than 15 seconds were re-coded as missing data (<em>n</em> = ?? data points across ?? participants; ??.??% of datapoints). Finally, outliers 2.5 standard deviations below or above the mean reading times per sentence per participant were removed (<em>n</em> = ?? data points; ??.??% of datapoints). Thus, a total of ?? participants (??.??% missing reading time data) were retained for analysis.</p>
+</section>
+<section id="confirmatory-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="confirmatory-analysis">Confirmatory analysis</h3>
+<p>The basic descriptive statistics of the sample (age, years of formal education, emotion rating responses, average raw reading times) are presented below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### psych::describe here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In line with the original study, a LME model was run whereby random intercepts for both participants and items were included in the model. Results show that …</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">### LME code here</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># also add three panel graph here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To test if participants read positively-valenced passages faster when they were written from a personal (second person’s) perspective compared to when they were written from an onlooker’s (third person’s) perspective, pairwise comparisons were conducted. Results show that …</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">### lsmeans code here</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># also add three panel graph here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exploratory-analyses" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-analyses">Exploratory analyses</h3>
+<p>To explore if educational status moderated the relationship between perspective of the passage and reading time among positively-valenced passages, a LME was conducted and an interaction term between the years of formal education and perspective was included as a predictor variable in the model. Results show that …</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">### LME code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+</section>
+<section id="mini-meta-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="mini-meta-analysis">Mini meta analysis</h2>
+<p>Combining across the original paper, 1st replication, and 2nd replication, what is the aggregate effect size?</p>
+<section id="summary-of-replication-attempt" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-replication-attempt">Summary of Replication Attempt</h3>
+<p>Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.</p>
+</section>
+<section id="commentary" class="level3">
+<h3 class="anchored" data-anchor-id="commentary">Commentary</h3>
+<p>Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt. None of these need to be long.</p>
 </section>
 </section>
 
