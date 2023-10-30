@@ -46,13 +46,11 @@ Additionally, while Bunderson (2020) used a sample of American participants, the
 
 #### Emotionally-Valenced Passages 
 
-In line with the original experiment, participants were presented with 48 text passages (24 unique passages, each with two versions: one written in a personal, second person perspective and the other written in an onlookers', third person perspective). The passages were obtained from the [supplemental materials](https://github.com/psych251/child2018_rescue/blob/main/original_paper/supplemental_materials.pdf) uploaded by the authors of the original study. Each passage was 5-9 sentences long and each passage ended with an explicit emotion word that matched the content of the passage.  Passages differed by both emotional valence (negative versus positive) and perspective (personal versus onlooker). Thus, of the 48 passages:
-- 12 were negatively-valenced, written in an personal (second-person) perspective;
-- 12 were positively-valenced, written in an personal (second-person) perspective;
-- 12 were negatively-valenced, written in an onlooker's (third-person) perspective;
-- and 12 were positively-valenced, written in an onlooker's (third-person) perspective.
+In line with the original experiment, participants were presented with 24 of the 48 possible emotionally-valenced text passages created by Child et al. (2018). The passages were obtained from the [supplemental materials](https://github.com/psych251/child2018_rescue/blob/main/original_paper/supplemental_materials.pdf) uploaded by the authors of the original study. There were 24 unique passages (12 negatively-valenced and 12 positively-valenced), each with two versions: one written in a personal, second person perspective and the other written in an onlookers’, third person perspective. Each passage was 5-9 sentences long and each passage ended with an explicit emotion word that matched the content of the passage. Thus each participant read:
+- 12 negatively-valenced texts, with half written in an personal (second-person) perspective and half written in an onlooker's (third-person) perspective;
+- and 12 positively-valenced texts, with half written in an personal (second-person) perspective and half written in an onlooker's (third-person) perspective.
 
-The passages were counterbalanced by perspective, valence and gender of the character for all participants. 
+Participants only read each novel scenario once (i.e., participants read each unique story in either the second- or third-person perspective but not both). The passages were counterbalanced by perspective, valence and gender of the character for all participants.
 
 #### Distractor Passages 
 
@@ -60,7 +58,10 @@ Participants were also presented with 24 distractor passages to conceal the purp
 
 ### Procedure	
 
-The stimuli were presented on Qualtrics, an online survey platform. As in the original experiment by Child et al. (2018), the sentences were presented on white background with font size 24 and black font. 
+The stimuli were presented on Qualtrics, an online survey platform. As in the original experiment by Child et al. (2018), the sentences were presented on white background with font size 24 and black font.
+
+The links to the paradigms used can be accessed here:
+- Pilot A: [QSF file](REPLACE WITH LINK), [Survey link](REPLACE WITH LINK), [Data collected](REPLACE WITH LINK)
 
 At the very beginning of the study, participants were presented with an introduction and three practice passages created by Bunderson (the original materials for these particular materials were not accessible). To ensure the validity of the introduction and trial passages, "Feedback was obtained during piloting to ensure that the instructions and practice trials prepared participants for the task" (Bunderson, 2020).
 
@@ -112,25 +113,113 @@ Lastly, the current study followed the exclusion criteria outlined by Bunderson 
 
 [prose description not updated] Data preparation following the analysis plan.
 	
-```{r include=F}
+```{r admin, include = F}
 ### Data Preparation: 
 
 #### Load Relevant Libraries and Functions
-  # load dplyr for data cleaning
-  # load psych for descriptives
-  # load lme4 and lmrTest for LME
 
-#### Import data
+library(RCurl)        # for reading data from github
+library(tidyverse)    # for data cleaning
+library(psych)        # for descriptives
+library(lme4)         # for LME analyses
+library(lmerTest)     # for LME analyses
+library(ggplot2)      # for graphs
+library(sessioninfo)  # for recording session info
+library(pander)       # for recording session info
 
-#### Data exclusion / filtering
-  # Exclude participants who spend less than 400ms on more than half of trials
-  # Exclude reading times that are longer than 15 seconds
+#### Import data and remove unnecessary columns and rows
+
+data.url <- "https://raw.githubusercontent.com/psych251/child2018/master/data/psych251_child2018_anonymized_experiment.csv" #REPLACE WITH LINK
+charCount.url <- "https://raw.githubusercontent.com/psych251/child2018/master/data/Child_Oakhill_Garnham_2018_Sentence_CharacterCount.csv" #REPLACE WITH LINK
+
+child2018res_data <- read.csv(text = getURL(data.url), na.strings=c("",NA_real_)) %>%
+  dplyr::filter(Finished == 1) %>%
+  select( -c("StartDate":"RecordedDate",
+             "DistributionChannel":"UserLanguage"),
+         -starts_with("PRACTICE"),
+         -starts_with("FILLER"),
+         -contains("Click")) %>%
+  rename("Subject" = "ResponseId",
+         "Age" = "D1.AGE",
+         "Education" = "EDU") %>%
+  rename_all(~str_replace_all(., "_Page.Submit", ""))  %>%
+  rename_all(~str_replace_all(., "X", "")) 
+
+child2018res_charcount <- read.csv(text = getURL(charCount.url))
+
+#### Data exclusion: removing participants
+
+# remove participants who did not complete main survey (i.e., screened out)
+
+filtered_data = child2018res_data %>%
+  filter(D2.NATIVE.ENGLISH == 1 & D3.READING.DISORDER == 2) %>%
+  dplyr::select(-D2.NATIVE.ENGLISH, -D3.READING.DISORDER)
+
+# remove participants who spend less than 400ms on more than half of trials
+
+filtered_data = filtered_data %>%
+  dplyr::select(Subject:Age, 
+                ends_with("RT"), 
+                ends_with("ER")) %>% # rearrange columns
+  dplyr::mutate(proplessthan400ms = rowSums(across(`2p.N1.1RT`:`3pF.P12.7RT`) < 0.400, na.rm = TRUE) / rowSums(across(`2p.N1.1RT`:`3pF.P12.7RT`) > 0.000, na.rm = TRUE)) %>% 
+  dplyr::filter(proplessthan400ms < 0.5) %>%
+  dplyr::select(-proplessthan400ms)
+
+#### Data exclusion: removing specific data points
+
+  # initial no. of datapoints = 5160
+
+  sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) 
+  
+  # Exclude reading times that are longer than 15 seconds & equal to 0s
+
+filtered_data = filtered_data %>%
+  dplyr::mutate_at(vars(ends_with('RT') | ends_with('ER')), as.numeric) %>%
+  dplyr::mutate_at(vars(ends_with('RT')), ~ifelse(. > 15, NA_real_, .)) %>%
+  dplyr::mutate_at(vars(ends_with('RT')), ~ifelse(. == 0, NA_real_, .))
+
+  sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) # no. of datapoints left = 50782 (i.e., 82 datapoints removed)
+  
   # Exclude reading times that are more than 2.5sd from each individuals' mean
+  
+filtered_data = filtered_data %>%
+  dplyr::mutate(
+    RTmean = rowMeans(as.matrix(filtered_data %>% dplyr::select(ends_with('RT'))), na.rm = TRUE),
+    RTsd = rowSds(as.matrix(filtered_data %>% dplyr::select(ends_with('RT'))), na.rm = TRUE)) %>%
+  dplyr::mutate_at(
+    vars(ends_with('RT')), ~case_when(. > RTmean + (2.5 * RTsd) ~ NA_real_,
+                                      . < RTmean - (2.5 * RTsd) ~ NA_real_,
+                                      TRUE ~ .)) %>%
+  dplyr::select(-RTmean, -RTsd)
 
-#### Prepare data for analysis - create columns etc.
-  # Convert data into long format
-  # Create column indicating unique trial numbers (for random intercept of item)
-  # Compute log-residual reading times
+  sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) 
+    # new no. of datapoints = 4926 (i.e., 152 datapoints removed)
+  
+#### Prepare data for analysis
+  
+  # Convert data into long format (RT; Main data for replication)
+  
+  long_RT_data = filtered_data %>% 
+    dplyr::select(-ends_with(".ER")) %>%
+    pivot_longer(cols=-c("Subject", "Age"),
+                 names_to = 'Passage',
+                 values_to = 'RT') %>% 
+    dplyr::mutate(Perspective = as.factor(grepl("2p", Passage)),
+                  Valence = as.factor(grepl(".P", Passage))) %>%
+    dplyr::filter(!is.na(RT)) %>%
+    left_join(., child2018res_charcount, by = c("Passage")) %>%
+    dplyr::mutate(log_RT = log(RT)) # create log RT
+  
+  # Convert data into long format (ER; Exploratory data)
+  
+  long_ER_data = filtered_data %>% 
+    dplyr::select(-ends_with("RT")) %>%
+    pivot_longer(cols=-c("Subject", "Age"),
+                 names_to = 'Passage',
+                 values_to = 'ER') %>% 
+    mutate(Perspective = as.factor(grepl("2p", Passage)),
+           Valence = as.factor(grepl(".P", Passage))) %>%
+             dplyr::filter(!is.na(ER))
 
 ```
 
@@ -142,22 +231,87 @@ There were three exclusion criteria used. Firstly, participants (*n* = ?? partic
 
 The basic descriptive statistics of the sample (age, years of formal education, emotion rating responses, average raw reading times) are presented below.
 
-```{r include=T}
-### psych::describe here
+```{r descriptives, include=T}
+### participant level statistics of the sample
+
+psych::describe(filtered_data %>%
+                  dplyr::mutate(
+                    ReadingTime = rowMeans(as.matrix(filtered_data %>% dplyr::select(ends_with('RT'))), na.rm = TRUE),
+                    EmotionRating = rowMeans(as.matrix(filtered_data %>% dplyr::select(ends_with('ER'))), na.rm = TRUE)) %>%
+                  dplyr::select(Age, Education, ReadingTime, EmotionRating))
+
+```
+
+In line with the original study and the replication study done by Bunderson, log-residual reading times were calculated to account for the length effects of different items. A regression of (log-transformed) reading times against the number of characters per sentence was performed and the log-residual reading times (with an intercept of zero for each participant) were used for the main analyses later on. 
+
+```{r log-residual-calculation, include=T}
+### Regress log RT against character count and create variable
+
+reg_RT_data = lmer(log_RT ~ 1 + Character_Count + (1 | Subject), long_RT_data)
+long_RT_data$log_RT_Resid <- residuals(reg_RT_data)
+rm(reg_RT_data)
+
 ```
 
 In line with the original study, a LME model was run whereby random intercepts for both participants and items were included in the model. Results show that ...
 
 ```{r include=T}
-### LME code here
-# also add three panel graph here
+### analyses: LME and contrasts
+
+ RT_model <- 
+  lmer(log_RT_Resid ~ Perspective + Valence + Perspective*Valence + 
+         (1 | Subject) + (1 | Passage), 
+       data = long_RT_data)
+  summary(RT_model, ddf = "Satterthwaite")
+
 ```
 
-To test if participants read positively-valenced passages faster when they were written from a personal (second person's) perspective compared to when they were written from an onlooker's (third person's) perspective, pairwise comparisons were conducted. Results show that ...
+To test if participants read positively-valenced passages faster when they were written from a personal (second person's) perspective compared to when they were written from an onlooker's (third person's) perspective, pairwise comparisons were conducted using the *lsmeans* package, as in the original study. Results show that ...
 
 ```{r include=T}
-### lsmeans code here
-# also add three panel graph here
+### lsmeans to text for pairwise contrasts 
+
+  RT_model_con <- 
+    lsmeans(RT_model, 
+            pairwise ~ Perspective | Valence, 
+            at = list(Perspective = c("TRUE", "FALSE"), Valence = c("TRUE", "FALSE")),
+            pbkrtest.limit = 5100) # WARNING: This line is computationally heavy and takes a while to run
+  
+  contrast(RT_model_con, method = "pairwise", ddf = "Satterthwaite")
+  
+# graph RT results
+  
+  RT_data_graph = long_RT_data %>%
+    group_by(Perspective, Valence) %>%
+    summarise(Mean_logRTResid = mean(log_RT_Resid, na.rm = TRUE),
+              SE_RT = sd(log_RT_Resid, na.rm = TRUE) / sqrt( length(log_RT_Resid[!is.na(log_RT_Resid)])))
+
+ggplot(data = RT_data_graph, 
+       aes(x = Valence, 
+           y = Mean_logRTResid, 
+           fill = Perspective)) +
+  geom_bar(position = "dodge", 
+           stat = "identity") +
+  geom_errorbar(aes(ymin = Mean_logRTResid - SE_RT, 
+                    ymax = Mean_logRTResid + SE_RT), 
+                width = .5, position=position_dodge(.9), 
+                na.rm = TRUE)  +
+  labs(title = "Reading Times ",
+       subtitle = "for Valence by Perspective",
+       tag = "A",
+       y = "Log Residual Reading Times", 
+       x = "Valence") +
+  scale_x_discrete(labels=c("FALSE"="Negative", 
+                            "TRUE"="Positive")) +
+  scale_fill_discrete(name="Perspective", 
+                      labels = c("Third-person (he/she)",
+                                 "Second-person (you)"))
+
+knitr::include_graphics("https://github.com/psych251/child2018/blob/master/original_paper/Child_Oakhill_Garnham_2018_Figure1.png?raw=true")
+
+  # clean environment
+  rm(RT_model, RT_model_con, RT_data_graph)
+  
 ```
 
 ### Exploratory analyses
