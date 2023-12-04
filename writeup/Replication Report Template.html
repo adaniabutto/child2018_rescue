@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Verity Lua (vyqlua@stanford.edu)">
-<meta name="dcterms.date" content="2023-12-03">
+<meta name="dcterms.date" content="2023-12-04">
 
 <title>Replication of Experiment 1 by Child, Oakhill, &amp; Garnham (2018, Language, Cognition and Neuroscience)</title>
 <style>
@@ -958,7 +958,7 @@ function nexttick(func) {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 3, 2023</p>
+      <p class="date">December 4, 2023</p>
     </div>
   </div>
   
@@ -1021,7 +1021,7 @@ function nexttick(func) {
 <section id="analysis-plan" class="level3">
 <h3 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h3>
 <p>As in Child et al. (2018; p.882), “The reading times were analysed using linear mixed effect (LME) models. A natural log transformation was performed in order to normalise the data. We accounted for length effects of different passages by regressing (log) reading times against the number of characters per sentence. These regressions were calculated by participant. As a result, log-residual reading times with a mean (intercept) of zero (per participant) were entered into the analyses… Perspective as well as valence were included as fixed-effects into the analysis using deviation coding. In addition, we also included participants and items with random intercepts and slopes into the mixed models. For parameter reports, we used the default restricted maximum likelihood estimations provided by the lme4 package”. Based on Akaike Information Criterion (AIC) scores, Child et al. (2018) found that the model including random intercepts of participants and items, but not random slopes, showed the best fit. Thus, the current analysis will utilize a model with random intercepts for participants and items but without random slopes as in the original study, unless the model fails to converge and needs to be further simplified. For this analysis, the current replication sought to examine if there would be an interaction between valence and perspective, whereby differences in reading times based on perspective were dissimilar for positively- and negatively-valenced passages.</p>
-<p>The main result that the present study seeks to replicate is the finding that “reading times were faster for passages that were written from a personal perspective than from an onlooker perspective” (Child et al., 2018; p.883). To test replicate this finding, a pairwise comparison will be conducted to examine if within the positively-valenced passages, reading times differed by the perspective the passages were written in.</p>
+<p>The main result that the present study seeks to replicate is the finding that “reading times were faster for passages that were written from a personal perspective than from an onlooker perspective” (Child et al., 2018; p.883). To replicate this finding, a pairwise comparison will be conducted to examine if within the positively-valenced passages, reading times differed by the perspective the passages were written in. In the original study, the authors found that “<em>for positive emotions, reading times were faster for passages that were written from a personal perspective (M = 2201, SD = 1284) than from an onlooker perspective (M = 2350, SD = 1351; t(4408) = 3.73, p &lt; .001; see Figure 1)</em>” (Child et al., 2018). In the replication study, Bunderson however found no significant difference in the t-test (t(934) = -0.99, p = 0.323; Bunderson, 2020).</p>
 <p>An exploratory analysis will also be conducted to examine if educational status would affect the strength of the relationship between perspective of passage and reading time observed within the positively-valenced passages. LME will be used given that participants’ educational status is a between-persons variable while the perspective of passages was a repeated measure within participants. As in the LME analysis described above, random intercepts of participants and items will be included but not random slopes.</p>
 <p>All analyses will be conducted in R version 4.2.2 (<a href="https://CRAN.R-project.org/package=rlang">Henry &amp; Wickham, 2023</a>). LME will be conducted using <em>lme4</em> version 1.1-33 (<a href="https://doi.org/10.18637/jss.v067.i01">Bates et al., 2015</a>) and <em>lmerTest</em> version 3.1-3 (<a href="https://doi.org/10.18637/jss.v082.i13">Kuznetsova et al., 2017</a>). In line with the original study, pairwise tests will be conducted using the lsmeans package version 2.30-0 (<a href="https://doi.org/10.18637/jss.v069.i01">Lenth, 2016</a>).</p>
 </section>
