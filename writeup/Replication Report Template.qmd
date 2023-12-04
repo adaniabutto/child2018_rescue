@@ -30,11 +30,7 @@ Thirdly, the replication study and the original study differed in the setting by
 
 ### Power Analysis
 
-[not done] Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
-
-How much power does your planned sample have for original effect? For an attenuated effect that is half the size of the original? 
-
-(If power analysis is not possible or precise, discuss more fully how you determined a sample size that would be sufficient for rescue.)
+The original study utilized a sample of 36 participants, and the first replication utilized a sample of 40 participants. Given that the statistical tests of interest for the current replication (a pairwise test for an interaction term in a mixed effects model) is relatively complex, it was difficult to conduct an a priori power analysis to determine the sample size needed for the rescue replication. Instead, the current rescue used the rule-of-thumb suggestion of recruiting a sample approximately 2.5 times greater than the original sample (Simonsohn, 2015). Hence, 100 participants (40*2.5; using the larger replication sample size of 40 to be more conservative) were recruited for the study.
 
 ### Planned Sample
 
@@ -61,7 +57,8 @@ Participants were also presented with 24 distractor passages to conceal the purp
 The stimuli were presented on Qualtrics, an online survey platform. As in the original experiment by Child et al. (2018), the sentences were presented on white background with font size 24 and black font.
 
 The links to the paradigms used can be accessed here:
-- Pilot A: [QSF file](https://github.com/psych251/child2018_rescue/blob/main/materials/child2018_pilotA.qsf), [Survey link](https://stanforduniversity.qualtrics.com/jfe/form/SV_ba0SVasU56evHy6), [Data collected](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_pilotA_October%2B29%2C%2B2023_22.37.csv)
+- Pilot A (Note: Passages were written in American spelling for Pilot A): [QSF file](https://github.com/psych251/child2018_rescue/blob/main/materials/child2018_pilotA.qsf), [Survey link](https://stanforduniversity.qualtrics.com/jfe/form/SV_ba0SVasU56evHy6), [Data collected](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_pilotA_October%2B29%2C%2B2023_22.37.csv)
+- Pilot B: [QSF file](https://github.com/psych251/child2018_rescue/blob/main/materials/child2018_pilotB.qsf), [Survey link](https://stanforduniversity.qualtrics.com/jfe/form/SV_da8ns38uiZ99Ouy), [Data collected](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_pilotB_December%2B3%2C%2B2023_00.04.csv)
 
 At the very beginning of the study, participants were presented with an introduction and three practice passages created by Bunderson (the original materials for these particular materials were not accessible). To ensure the validity of the introduction and trial passages, "Feedback was obtained during piloting to ensure that the instructions and practice trials prepared participants for the task" (Bunderson, 2020).
 
@@ -131,7 +128,7 @@ library(pander)       # for recording session info
 
 #### Import data and remove unnecessary columns and rows
 
-data.url <- "https://raw.githubusercontent.com/psych251/child2018_rescue/main/data/child2018_pilotA_October%2B29%2C%2B2023_22.37.csv" 
+data.url <- "https://raw.githubusercontent.com/psych251/child2018_rescue/main/data/child2018_pilotB_December%2B3%2C%2B2023_00.04.csv" 
 charCount.url <- "https://raw.githubusercontent.com/psych251/child2018_rescue/main/data/Child_Oakhill_Garnham_2018_Sentence_CharacterCount.csv" 
 
 child2018res_data <- read.csv(text = getURL(data.url), na.strings=c("",NA_real_)) %>%
@@ -322,7 +319,13 @@ knitr::include_graphics("https://raw.githubusercontent.com/psych251/child2018_re
 To explore if educational status moderated the relationship between perspective of the passage and reading time among positively-valenced passages, a LME was conducted and an interaction term between the years of formal education and perspective was included as a predictor variable in the model. Results show that ...
 
 ```{r include=T}
-### LME code here
+### analyses: education as moderator
+
+ RT_model <- 
+  lmer(log_RT_Resid ~ Perspective + Valence + Perspective*Valence*Education + 
+         (1 | Subject) + (1 | Passage), 
+       data = long_RT_data)
+  summary(RT_model, ddf = "Satterthwaite")
 ```
 
 ## Discussion
