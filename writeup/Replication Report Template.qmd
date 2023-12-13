@@ -94,6 +94,8 @@ Lastly, the current study followed the exclusion criteria outlined by Bunderson 
 
 ### Methods Addendum (Post Data Collection)
 
+The methods and proposed analyses as described above were preregistered. The preregistration can be found [here](https://osf.io/ubmws).
+
 #### Actual Sample
 
 A balanced sample of 50% females and 50% males were recruited for the study over Prolific. Although the gender proportion of the original sample is unclear, the hypotheses were not gender-specific. Thus, to ensure that both males and females were represented in the sample, a balanced sample was recruited. The descriptive statistics of the sample are provided below.
