@@ -20,7 +20,7 @@ One challenge of the current project lies in the data analysis. Specifically, th
 
 ## Summary of prior replication attempt
 
-There were several differences in the replication attempt done by Bunderson and the original study done by Child and colleagues that should be discussed. Firstly, as noted above, while Child and colleagues utilized a sample of college students (aged between 18 and 33), the replication study by Bunderson recruited participants (aged between 24 and 70) that may or may not have been to college. Given that college students may have greater exposure to reading and writing personal anecdotes relative to the general population, the difference in the samples' educational background may account for why the main finding that individuals read quicker when positive stories are presented in the first-person perspective was not replicated.
+There were several differences in the replication attempt done by Bunderson and the original study done by Child and colleagues that should be discussed. Firstly, as noted above, while Child and colleagues utilized a sample of college students (aged between 18 and 33), the replication study by Bunderson recruited participants (aged between 24 and 70) that may or may not have been to college. Given that college students may have greater exposure to reading and writing personal anecdotes relative to the general population, the difference in the samples' educational background may account for why the main finding that individuals read quicker when positive stories are presented in the second-person perspective was not replicated.
 
 Secondly, there were some differences in the materials used in the studies. While the main stimuli (the emotionally-valenced passages) and the filler passages presented to participants were similar across both studies, the instructions for the tasks, the passages used for the practice trials, and the phrasing of the items used to examine participants' emotional state may have been slightly different given that Bunderson was unable to obtain these materials from the original authors. However, as the main effect we are interested in replicating is the reading time for the emotionally-valenced passages (for which were similar across both studies), I posit that these differences were unlikely to have a substantial impact on the findings of the replication study done by Bunderson. 
 
@@ -93,24 +93,36 @@ Lastly, the current study followed the exclusion criteria outlined by Bunderson 
 
 ### Methods Addendum (Post Data Collection)
 
-[not updated] You can comment this section out prior to final report with data collection.
-
 #### Actual Sample
 
-[not updated] Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+A balanced sample of 50% females and 50% males were recruited for the study over Prolific. Although the gender proportion of the original sample is unclear, the hypotheses were not gender-specific. Thus, to ensure that both males and females were represented in the sample, a balanced sample was recruited. The descriptive statistics of the sample are provided below.
+
 
 #### Differences from pre-data collection methods plan
 
-[not updated] Any differences from what was described as the original plan, or “none”.
+In calculating the log-residual reading times, the model whereby the log-transformed reading time was regressed against the number of characters in each sentence (to account for the length effects of different items) could not converge, even after trying out multiple optimizer. Thus, the number of characters in each sentence were scaled.
 
 ## Results
 
-
 ### Data preparation
 
-[prose description not updated] Data preparation following the analysis plan.
+The raw data for the rescue project is available in the [data folder of the GitHub Repository](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_main_December%2B5%2C%2B2023_18.46.csv). The data has been anonymized prior to being uploaded onto the repository. Below are some notes to understand the raw data column headings, as summarized by Bunderson (2020):
+- ‘2p’ stands for second-person perspective.
+- ‘3pF’ stands for third-person perspective with a female character.
+- ‘3pM’ stands for third-person perspective with a male character.
+- ‘P’ and ‘N’, followed by a number, indicate the valence and scenario number.
+- ‘RT’ stands for reaction or reading time, and is preceded by a number indicating the sentence.
+- ‘ER’ stands for emotion self-rating.
+
+Prior to analyses, the raw data was first cleaned to remove participants who were screened out of the survey (i.e., non-native English speakers, and/or participants with a diagnosed reading disorder). Next, the columns not needed for the data analysis (e.g., the emotion ratings and reading time for the filler passages, the click counts for each survey page, etc.) were removed and certain variables were renamed to aid readability. Specifically, "ResponseId" was renamed to "Subject", "D1.AGE" was renamed to "Age", and "EDU" was renamed to "Education". 
+
+To prepare for the data analyses, data was transformed into the long format, where each row represented one trial. Thus, in the long datasets, each participant had multiple rows of data. Two additional columns were created during this transformation as well to indicate the valence and perspective conditions of the particular trial. In the column "Valence", "TRUE" denotes a positively valenced trial, and "FALSE" denotes a negatively valenced trial. In the column "Perspective", "TRUE" denotes a personal (second-person) perspective, and "FALSE" denotes the onlooker (third-person) perspective. 
+
+Two types of long datasets were created: one for the main analyses (excluding participants who had reading times of less than 400ms for more than 50% of the trials, trails which were longer than 15s, and trials that were more than 2.5SDs from each individuals' mean; N = 98), and one for the sensitivity analyses (only excluding trials that were more than 2.5SDs from each individuals' mean, as in the original study by Child et al., 2018; N = 100). 
+
+The above data preparation process is in the code below, with brief comment titles to denote exact steps. The code can be seen in the [Quorto File](https://github.com/psych251/child2018_rescue/blob/main/writeup/Replication%20Report%20Template.qmd) uploaded in the repository.
 	
-```{r admin, include = F}
+```{r admin, include = T, echo=T}
 ### Data Preparation: 
 
 #### Load Relevant Libraries and Functions
@@ -123,12 +135,13 @@ library(lme4)         # for LME analyses
 library(lmerTest)     # for LME analyses
 library(lsmeans)      # for LME (contrasts) analyses
 library(ggplot2)      # for graphs
+library(metafor)      # for mini meta-analysis
 library(sessioninfo)  # for recording session info
 library(pander)       # for recording session info
 
 #### Import data and remove unnecessary columns and rows
 
-data.url <- "https://raw.githubusercontent.com/psych251/child2018_rescue/main/data/child2018_pilotB_December%2B3%2C%2B2023_00.04.csv" 
+data.url <- "https://raw.githubusercontent.com/psych251/child2018_rescue/main/data/child2018_main_December%2B5%2C%2B2023_18.46.csv" 
 charCount.url <- "https://raw.githubusercontent.com/psych251/child2018_rescue/main/data/Child_Oakhill_Garnham_2018_Sentence_CharacterCount.csv" 
 
 child2018res_data <- read.csv(text = getURL(data.url), na.strings=c("",NA_real_)) %>%
@@ -145,7 +158,8 @@ child2018res_data <- read.csv(text = getURL(data.url), na.strings=c("",NA_real_)
   rename_all(~str_replace_all(., "_Page.Submit", ""))  %>%
   rename_all(~str_replace_all(., "X", "")) 
 
-child2018res_charcount <- read.csv(text = getURL(charCount.url))
+child2018res_charcount <- read.csv(text = getURL(charCount.url)) %>% 
+  dplyr::mutate(Character_Count_scaled = scale(Character_Count))
 
 #### Data exclusion: removing participants
 
@@ -154,6 +168,8 @@ child2018res_charcount <- read.csv(text = getURL(charCount.url))
 filtered_data = child2018res_data %>%
   filter(D2.NATIVE.ENGLISH == 1 & D3.READING.DISORDER == 2) %>%
   dplyr::select(-D2.NATIVE.ENGLISH, -D3.READING.DISORDER)
+
+  # initial no. of participants = 100
 
 # remove participants who spend less than 400ms on more than half of trials
 
@@ -165,35 +181,44 @@ filtered_data = filtered_data %>%
   dplyr::filter(proplessthan400ms < 0.5) %>%
   dplyr::select(-proplessthan400ms)
 
+# new no. of participants = 98 (i.e., 2 participants removed)
+
 #### Data exclusion: removing specific data points
 
-  # initial no. of datapoints = # update here #
+  # initial no. of datapoints = 12642
 
   sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) 
   
   # Exclude reading times that are longer than 15 seconds & equal to 0s
 
-filtered_data = filtered_data %>%
-  dplyr::mutate_at(vars(ends_with('RT') | ends_with('ER') | contains("Edu")), as.numeric) %>%
-  dplyr::mutate_at(vars(ends_with('RT')), ~ifelse(. > 15, NA_real_, .)) %>%
-  dplyr::mutate_at(vars(ends_with('RT')), ~ifelse(. == 0, NA_real_, .))
+filtered_data <- filtered_data %>%
+  dplyr::mutate(across(where(is.character) & 
+                       (contains("Edu") | contains("Age")), trimws)) %>%
+  dplyr::mutate(across(where(is.character) & 
+                       (ends_with('RT') | ends_with('ER') | contains("Edu") | contains("Age")), as.numeric)) %>%
+  dplyr::mutate(across(ends_with('RT'), ~ifelse(. > 15, NA_real_, .))) %>%
+  dplyr::mutate(across(ends_with('RT'), ~ifelse(. == 0, NA_real_, .)))
 
-  sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) # no. of datapoints left = 50782 (i.e., 82 datapoints removed)
+
+  sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) # no. of datapoints left = 12487 (i.e., 155 datapoints removed)
   
   # Exclude reading times that are more than 2.5sd from each individuals' mean
   
-filtered_data = filtered_data %>%
+filtered_data <- filtered_data %>%
   dplyr::mutate(
-    RTmean = rowMeans(as.matrix(filtered_data %>% dplyr::select(ends_with('RT'))), na.rm = TRUE),
-    RTsd = rowSds(as.matrix(filtered_data %>% dplyr::select(ends_with('RT'))), na.rm = TRUE)) %>%
-  dplyr::mutate_at(
-    vars(ends_with('RT')), ~case_when(. > RTmean + (2.5 * RTsd) ~ NA_real_,
-                                      . < RTmean - (2.5 * RTsd) ~ NA_real_,
-                                      TRUE ~ .)) %>%
+    RTmean = rowMeans(as.matrix(dplyr::select(., ends_with('RT'))), na.rm = TRUE),
+    RTsd = rowSds(as.matrix(dplyr::select(., ends_with('RT'))), na.rm = TRUE)
+  ) %>%
+  dplyr::mutate(across(
+    ends_with('RT'),
+    ~case_when(. > RTmean + (2.5 * RTsd) ~ NA_real_,
+               . < RTmean - (2.5 * RTsd) ~ NA_real_,
+               TRUE ~ .)
+  )) %>%
   dplyr::select(-RTmean, -RTsd)
 
   sum(!is.na(filtered_data %>% dplyr::select(ends_with('RT')))) 
-    # new no. of datapoints = # update here # (i.e., # update here # datapoints removed)
+    # new no. of datapoints = 12099 (i.e., another 388 datapoints removed)
   
 #### Prepare data for analysis
   
@@ -221,17 +246,71 @@ filtered_data = filtered_data %>%
            Valence = as.factor(grepl(".P", Passage))) %>%
              dplyr::filter(!is.na(ER))
 
+#### Prepare data for sensitivity analysis
+  
+  sensitivity_data = child2018res_data %>%
+    filter(D2.NATIVE.ENGLISH == 1 & D3.READING.DISORDER == 2) %>%
+  dplyr::select(-D2.NATIVE.ENGLISH, -D3.READING.DISORDER) %>%
+    dplyr::select(Subject:Education, 
+                ends_with("RT"), 
+                ends_with("ER")) %>% 
+    dplyr::mutate(across(where(is.character) & 
+                           (contains("Edu") | contains("Age")), trimws)) %>%
+    dplyr::mutate(across(where(is.character) & 
+                           (ends_with('RT') | ends_with('ER') | 
+                              contains("Edu") | contains("Age")), as.numeric)) %>%
+    dplyr::mutate(across(ends_with('RT'), ~ifelse(. == 0, NA_real_, .))) %>% 
+    dplyr::mutate(
+      RTmean = rowMeans(as.matrix(dplyr::select(., ends_with('RT'))), na.rm = TRUE),
+      RTsd = rowSds(as.matrix(dplyr::select(., ends_with('RT'))), na.rm = TRUE)) %>%
+    dplyr::mutate(across(
+      ends_with('RT'),
+      ~case_when(. > RTmean + (2.5 * RTsd) ~ NA_real_,
+                 . < RTmean - (2.5 * RTsd) ~ NA_real_,
+                 TRUE ~ .))) %>%
+    dplyr::select(-RTmean, -RTsd)
+  
+  sum(!is.na(sensitivity_data %>% dplyr::select(ends_with('RT')))) 
+  # initial no. of datapoints = 12642
+  # new no. of datapoints = 12558 (i.e., 84 datapoints removed)
+  
+    # Convert data into long format (RT)
+  
+  long_RT_data_sensitivity = sensitivity_data %>% 
+    dplyr::select(-ends_with(".ER")) %>%
+    pivot_longer(cols=-c("Subject", "Age", "Education"),
+                 names_to = 'Passage',
+                 values_to = 'RT') %>% 
+    dplyr::mutate(Perspective = as.factor(grepl("2p", Passage)),
+                  Valence = as.factor(grepl(".P", Passage))) %>%
+    dplyr::filter(!is.na(RT)) %>%
+    left_join(., child2018res_charcount, by = c("Passage")) %>%
+    dplyr::mutate(log_RT = log(RT)) # create log RT
+  
+  # Convert data into long format (ER)
+  
+  long_ER_data_sensitivity = sensitivity_data %>% 
+    dplyr::select(-ends_with("RT")) %>%
+    pivot_longer(cols=-c("Subject", "Age", "Education"),
+                 names_to = 'Passage',
+                 values_to = 'ER') %>% 
+    mutate(Perspective = as.factor(grepl("2p", Passage)),
+           Valence = as.factor(grepl(".P", Passage))) %>%
+             dplyr::filter(!is.na(ER))
+    
 ```
 
 ### Results of control measures
 
-There were three exclusion criteria used. Firstly, participants (*n* = ?? participants) who had reading times of less then 400ms for more than half the trials were excluded from analysis. Secondly, reading times that were longer than 15 seconds were re-coded as missing data (*n* = ?? data points across ?? participants; ??.??% of datapoints). Finally, outliers 2.5 standard deviations below or above the mean reading times per sentence per participant were removed (*n* = ?? data points; ??.??% of datapoints). Thus, a total of ?? participants (??.??% missing reading time data) were retained for analysis.
+There were three exclusion criteria used. Firstly, participants (*n* = 2 participants) who had reading times of less then 400ms for more than half the trials were excluded from analysis. Secondly, reading times that were longer than 15 seconds were re-coded as missing data (*n* = 155 data points across 52 participants; 1.23% of datapoints). Finally, outliers 2.5 standard deviations below or above the mean reading times per sentence per participant were removed (*n* = 388 data points; 3.07% of datapoints). Thus, a total of 98 participants (4.30% missing reading time data) were retained for analysis.
+
+Sensitivity analyses were also conducted with the full 100 participant sample excluding outlier data points that were 2.5 standard deviations below or above the mean reading times per sentence per participant (with *n* = 84 data points; 0.66% of datapoints).
 
 ### Confirmatory analysis
 
 The basic descriptive statistics of the sample (age, years of formal education, emotion rating responses, average raw reading times) are presented below.
 
-```{r descriptives, include=T}
+```{r descriptives, include=T, echo=T}
 ### participant level statistics of the sample
 
 psych::describe(filtered_data %>%
@@ -240,47 +319,66 @@ psych::describe(filtered_data %>%
                     EmotionRating = rowMeans(as.matrix(filtered_data %>% dplyr::select(ends_with('ER'))), na.rm = TRUE)) %>%
                   dplyr::select(Age, Education, ReadingTime, EmotionRating))
 
+long_RT_data %>%
+  group_by(Perspective, Valence) %>%
+  summarise(Mean_RT = mean(RT, na.rm=T),
+            StdDev_RT = sd(RT, na.rm=T))
+
+long_ER_data %>%
+  group_by(Perspective, Valence) %>%
+  summarise(Mean_ER = mean(ER, na.rm=T),
+            StdDev_ER = sd(ER, na.rm=T))
+
 ```
 
-In line with the original study and the replication study done by Bunderson, log-residual reading times were calculated to account for the length effects of different items. A regression of (log-transformed) reading times against the number of characters per sentence was performed and the log-residual reading times (with an intercept of zero for each participant) were used for the main analyses later on. 
+In line with the original study and the replication study done by Bunderson, log-residual reading times were calculated to account for the length effects of different items. Initially, a regression of (log-transformed) reading times against the number of characters per sentence was performed in line with the original study and with Bunderson's replication. However, the model failed to converge. Thus, a regression of (log-transformed) reading times against the scaled value of the number of characters per sentence was performed and the log-residual reading times (with an intercept of zero for each participant) were used for the main analyses later on. 
 
-```{r log-residual-calculation, include=T}
+```{r log-residual-calculation, include=T, echo=T}
 ### Regress log RT against character count and create variable
-
-reg_RT_data = lmer(log_RT ~ 1 + Character_Count + (1 + Character_Count | Subject), long_RT_data)
+reg_RT_data = lmer(log_RT ~ 1 + Character_Count_scaled + (1 + Character_Count_scaled | Subject), long_RT_data)
 long_RT_data$log_RT_Resid <- residuals(reg_RT_data)
 rm(reg_RT_data)
-
 ```
 
-In line with the original study, a LME model was run whereby random intercepts for both participants and items were included in the model. Results show that ...
+```{r log-residual-calculation for sensitivity analyses, include=T, echo=T}
+### Regress log RT against character count and create variable (sensitivity)
+reg_RT_data_sensitivity = lmer(log_RT ~ 1 + Character_Count_scaled + (1 + Character_Count_scaled | Subject), long_RT_data_sensitivity)
+long_RT_data_sensitivity$log_RT_Resid <- residuals(reg_RT_data_sensitivity)
+rm(reg_RT_data_sensitivity)
+```
+In line with the original study, a LME model was run whereby random intercepts for both participants and items were included in the model. Results show that there was no interaction between valence and perspective on log residual reading times.
 
-```{r include=T}
+```{r lmm analyses, include=T, echo=T}
 ### analyses: LME and contrasts
-
  RT_model <- 
   lmer(log_RT_Resid ~ Perspective + Valence + Perspective*Valence + 
          (1 | Subject) + (1 | Passage), 
        data = long_RT_data)
   summary(RT_model, ddf = "Satterthwaite")
+```
+
+```{r lmm analyses sensitivity, include=T, echo=T}
+### analyses: LME and contrasts for sensitivity analyses
+ RT_model_sensitivity <- 
+  lmer(log_RT_Resid ~ Perspective + Valence + Perspective*Valence + 
+         (1 | Subject) + (1 | Passage), 
+       data = long_RT_data_sensitivity)
+  summary(RT_model_sensitivity, ddf = "Satterthwaite")
 
 ```
 
-To test if participants read positively-valenced passages faster when they were written from a personal (second person's) perspective compared to when they were written from an onlooker's (third person's) perspective, pairwise comparisons were conducted using the *lsmeans* package, as in the original study. Results show that ...
+To test if participants read positively-valenced passages faster when they were written from a personal (second person's) perspective compared to when they were written from an onlooker's (third person's) perspective, pairwise comparisons were conducted using the *lsmeans* package, as in the original study. Results show that there was no significant difference in log residual reading times between the perspective conditions within the positive valence condition. The graph of the results are presented below. alongside the graph of the results obtained by the previous replication study and the results obtained by the original study.
 
-```{r include=T}
+```{r lsmeans analyses, include=T, echo=T}
 ### lsmeans to text for pairwise contrasts 
-
   RT_model_con <- 
     lsmeans(RT_model, 
             pairwise ~ Perspective | Valence, 
-            at = list(Perspective = c("TRUE", "FALSE"), Valence = c("TRUE", "FALSE")),
-            pbkrtest.limit = 5100) # WARNING: This line is computationally heavy and takes a while to run
+            at = list(Perspective = c("TRUE", "FALSE"), Valence = c("TRUE", "FALSE"))) 
   
   contrast(RT_model_con, method = "pairwise", ddf = "Satterthwaite")
   
-# graph RT results
-  
+# graph RT results for current rescue study
   RT_data_graph = long_RT_data %>%
     group_by(Perspective, Valence) %>%
     summarise(Mean_logRTResid = mean(log_RT_Resid, na.rm = TRUE),
@@ -294,7 +392,7 @@ ggplot(data = RT_data_graph,
            stat = "identity") +
   geom_errorbar(aes(ymin = Mean_logRTResid - SE_RT, 
                     ymax = Mean_logRTResid + SE_RT), 
-                width = .5, position=position_dodge(.9), 
+                width = .1, position=position_dodge(.9), 
                 na.rm = TRUE)  +
   labs(title = "Reading Times ",
        subtitle = "for Valence by Perspective",
@@ -305,38 +403,215 @@ ggplot(data = RT_data_graph,
                             "TRUE"="Positive")) +
   scale_fill_discrete(name="Perspective", 
                       labels = c("Third-person (he/she)",
-                                 "Second-person (you)"))
+                                 "Second-person (you)")) + 
+  coord_cartesian(ylim = c(-0.050, 0.055)) +
+  scale_y_continuous(breaks = c(-0.025, 0, 0.025, 0.050)) +
+  theme_minimal()
 
-knitr::include_graphics("https://raw.githubusercontent.com/psych251/child2018_rescue/main/original_paper/child2018_figure1.png?raw=TRUE")
+  # graph RT results for original replication study (Bunderson, 2020)
+  #knitr::include_graphics("")
+  
+  # graph RT results for original study (Child et al., 2018)
+  knitr::include_graphics("https://raw.githubusercontent.com/psych251/child2018_rescue/main/original_paper/child2018_figure1.png?raw=TRUE")
 
   # clean environment
   rm(RT_model, RT_model_con, RT_data_graph)
   
 ```
+```{r lsmeans analyses sensitivity analyses, include=T, echo=T}
+### lsmeans to text for pairwise contrasts for sensitivity analyses
+  RT_model_con_sensitivity <- 
+    lsmeans(RT_model_sensitivity, 
+            pairwise ~ Perspective | Valence, 
+            at = list(Perspective = c("TRUE", "FALSE"), Valence = c("TRUE", "FALSE"))) 
+  
+  contrast(RT_model_con_sensitivity, method = "pairwise", ddf = "Satterthwaite")
+  
+  
+# graph RT results for current rescue study (Sensitivity)
+  RT_data_graph_sensitivity = long_RT_data_sensitivity %>%
+    group_by(Perspective, Valence) %>%
+    summarise(Mean_logRTResid = mean(log_RT_Resid, na.rm = TRUE),
+              SE_RT = sd(log_RT_Resid, na.rm = TRUE) / sqrt( length(log_RT_Resid[!is.na(log_RT_Resid)])))
+
+ggplot(data = RT_data_graph_sensitivity, 
+       aes(x = Valence, 
+           y = Mean_logRTResid, 
+           fill = Perspective)) +
+  geom_bar(position = "dodge", 
+           stat = "identity") +
+  geom_errorbar(aes(ymin = Mean_logRTResid - SE_RT, 
+                    ymax = Mean_logRTResid + SE_RT), 
+                width = .1, position=position_dodge(.9), 
+                na.rm = TRUE)  +
+  labs(title = "Reading Times ",
+       subtitle = "for Valence by Perspective",
+       tag = "A",
+       y = "Log Residual Reading Times", 
+       x = "Valence") +
+  scale_x_discrete(labels=c("FALSE"="Negative", 
+                            "TRUE"="Positive")) +
+  scale_fill_discrete(name="Perspective", 
+                      labels = c("Third-person (he/she)",
+                                 "Second-person (you)")) + 
+  coord_cartesian(ylim = c(-0.050, 0.055)) +
+  scale_y_continuous(breaks = c(-0.025, 0, 0.025, 0.050)) +
+  theme_minimal()
+  
+```
 
 ### Exploratory analyses
 
-To explore if educational status moderated the relationship between perspective of the passage and reading time among positively-valenced passages, a LME was conducted and an interaction term between the years of formal education and perspective was included as a predictor variable in the model. Results show that ...
+To explore if educational status moderated the relationship between perspective of the passage and reading time among positively-valenced passages, a LME was conducted and an interaction term between the years of formal education and perspective was included as a predictor variable in the model. Results show that there was no three-way interaction between education, valence and perspective on log residual reading times.
 
-```{r include=T}
+The graphical results are presented below. Based on simple slope analyses, the only marginally significant (p = .05) simple slope of education was when valence was positive and perspective was third-person. Specifically, individuals with more years of formal education appear to process third-person positive passages quicker than individuals with less years of formal education.
+
+```{r education as moderator, include=T, echo=T}
 ### analyses: education as moderator
-
  RT_model <- 
   lmer(log_RT_Resid ~ Perspective + Valence + Perspective*Valence*Education + 
          (1 | Subject) + (1 | Passage), 
        data = long_RT_data)
   summary(RT_model, ddf = "Satterthwaite")
+  
+interactions::probe_interaction(RT_model,
+                                Education,
+                                Perspective,
+                                Valence,
+                                centered = "none") 
+```
+
+### Emotion rating
+
+Although not the focus of the current rescue replication study, a separate linear mixed effects (LME) model was run to analyze the emotion ratings for each of the four types of passages. Perspective and valence were incorporated as fixed effects, while participants and items were treated as random intercepts. In the original study, Child et al. found "an interaction between perspective and valence for self-reported emotions", whereby "Participants gave similar ratings for both perspectives when they were presented with a negative emotion (“he/she”: M = 3.36, SD = 1.29; “you”: M = 3.30, SD = 1.46; t = 1.08, p > 0.1), but they gave higher ratings for the second person perspective you (M = 7.04, SD = 1.77) than for the third person perspective (M = 6.82, SD = 1.73) when reading about a positive emotion (perspective effect for positive emotion: (t(4335) = 3.67, p < .001, see Figure 2)" (Child et al., 2018, p.883). 
+
+However, in the current study, there was no interaction between valence and perspective on emotion ratings. Within the positively valenced passages, there was also no significant effect of perspective on emotional rating. Nonetheless, the trends are in the same direction as those observed in the original study.
+
+```{r emotion rating, include=T, echo=T}
+### analyses: emotion ratings
+ ER_model <- 
+  lmer(ER ~ Perspective + Valence + Perspective*Valence + 
+         (1 | Subject) + (1 | Passage), 
+       data = long_ER_data)
+  summary(ER_model, ddf = "Satterthwaite")
+  
+  ### lsmeans to text for pairwise contrasts 
+  ER_model_con <- 
+    lsmeans(ER_model, 
+            pairwise ~ Perspective | Valence, 
+            at = list(Perspective = c("TRUE", "FALSE"), Valence = c("TRUE", "FALSE"))) 
+  
+  contrast(ER_model_con, method = "pairwise", ddf = "Satterthwaite")
+  
+# graph ER results
+  ER_data_graph = long_ER_data %>%
+    group_by(Perspective, Valence) %>%
+    summarise(Mean_ER = mean(ER, na.rm = TRUE),
+              SE_ER = sd(ER, na.rm = TRUE) / sqrt( length(ER[!is.na(ER)])))
+
+ggplot(data = ER_data_graph, 
+       aes(x = Valence, 
+           y = Mean_ER, 
+           fill = Perspective)) +
+  geom_bar(position = "dodge", 
+           stat = "identity") +
+  geom_errorbar(aes(ymin = Mean_ER - SE_ER, 
+                    ymax = Mean_ER + SE_ER), 
+                width = .1, position=position_dodge(.9), 
+                na.rm = TRUE)  +
+  labs(title = "Emotion Rating",
+       subtitle = "for Valence by Perspective",
+       tag = "A",
+       y = "Emotion Rating", 
+       x = "Valence") +
+  scale_x_discrete(labels=c("FALSE"="Negative", 
+                            "TRUE"="Positive")) +
+  scale_fill_discrete(name="Perspective", 
+                      labels = c("Third-person (he/she)",
+                                 "Second-person (you)")) + 
+  coord_cartesian(ylim = c(0, 7.5)) +
+  scale_y_continuous(breaks = c(0, 2, 4, 6)) +
+  theme_minimal()
 ```
 
 ## Discussion
 
+Taken together, the current study did not find any significant difference in the reading time of positively-valenced passages. Interestingly, the trends observed (see graphs presented above showing the log residual regression reading times in each of the four conditions) in the first replication study by Bunderson (2020) matched the original findings more closely than the current rescue study, although the p-values obtained by Bunderson were non-significant. To examine the collective evidence for the hypothesis that individuals read quicker when positive stories are presented in the second- rather than third-person perspective, a mini-meta analysis is conducted below with the original, initial replication, and current rescue study.
+
 ## Mini meta analysis
-Combining across the original paper, 1st replication, and 2nd replication, what is the aggregate effect size? 
+
+The effect of interest was the pairwise t-test examining the log residual reading times of second- and third-person positive passages. Cohen's d was difficult to calculate given that the model was a mixed effects model and I was not sure whether my method of calculating it was correct. Hence, this analysis should be considered with criticism.
+
+### Effect size from original study (Child et al., 2018)
+
+To calculate the Cohen's d obtained in the original study, I obtained information from the sentence "However, for positive emotions, reading times were faster for passages that were written from a personal perspective (M = 2201, SD = 1284) than from an onlooker perspective (M = 2350, SD = 1351; t(4408) = 3.73, p < .001; see Figure 1)" (Child et al., 2018, p.883), and used the formula "d = (m1-m2)/(SD_pooled)", whereby *m1* and *m2* are the mean reading time values for the two conditions, and *SD_pooled* is calculated by the formula "SD_pooled = ((sd1^2-sd2^2)/2)^0.5". *sd1* and *sd2* are the sd of reading time for the two conditions. Hence, substituting the values into the equation, I calculated Cohen's d to be:
+* d = (2201 - 2350)/((1284^2^ +1351^2^)/2)^0.5^ = -0.113. 
+
+To get the standard error of the Cohen's d estimate, the formula "SE_d = (2(1-r)/n + d^2/2n)^0.5" was used, whereby *r* is the correlation of participants' reading times in the two conditions (positive-personal and positive-onlooker), *n* is the number of participants, and *d* is the Cohen's d value. *r* is unknown based on the available data, and is assumed to be 0.70 in the current work. Thus, I calculated the SE_d to be:
+* SE_d = ((2x(1-0.70))/36 + 0.113^2^/(2x36))^0.5^ = 0.130.
+
+### Effect size from replication study (Bunderson, 2020)
+
+Although Bunderson did report the Cohen's d value in her replication, I calculated Cohen's d using the same formula as above to standardize the effect sizes used in the mini-meta analysis. Of note, Bunderson (as well as the current rescue study) used the average reading time per sentence in each passage, rather than the total reading time per passage. This may account for why the mean values look different relative to the original study. Nonetheless, this difference should not impact the calculation of the effect size. Hence, substituting the values into the equation, I calculated Cohen's d to be:
+* d = (7.57 - 8.13)/((2.15^2^ +1.99^2^)/2)^0.5^ = -0.270. 
+
+To get the standard error of the Cohen's d estimate, the same formula was used as above, and *r* is again assumed to be 0.70. Thus, I calculated the SE_d to be:
+* SE_d = ((2x(1-0.70))/40 + 0.270^2^/(2x40))^0.5^ = 0.126.
+
+### Effect size from current rescue study
+
+Using the effect size excluding participants who spent less than 400ms on more than 50% of the trials, excluding data points that were greater than 15 seconds, and excluding data points mre than 2.5sd away from each participants means, I calculated Cohen's d to be:
+* d = (7.399660 - 7.079812)/((1.823134^2^ +1.963192^2^)/2)^0.5^ = 0.169. 
+
+To get the standard error of the Cohen's d estimate, the same formula was used as above, and *r* is again assumed to be 0.70. Thus, I calculated the SE_d to be:
+* SE_d = ((2x(1-0.70))/98 + 0.169^2^/(2x98))^0.5^ = 0.079.
+
+### Mini meta analysis results
+
+Based on the mini meta analysis, there was no significant effect of perspective on reading time among positively-valenced passages. Interestingly, the effect sizes calculated suggest that Bunderson's (2020) replication may have provided stronger evidence for the hypothesis than the original study. Nonetheless, the above calculations may have been inaccurate, so this analysis should be interpreted with caution.
+
+The mini meta-analysis suggests that the effect size is d = -0.056 (se = 0.135, 95% CI = [-0.32, 0.21], p = .678).
+
+```{r mini meta-analysis, include=T, echo=T}
+### analysis: mini meta-analysis
+  minimeta_dataset <- data.frame(
+    study = c("Child et al., 2018", "Bunderson, 2020", "Lua, 2023"),
+    N = c(36,40,98),
+    cohens_d = c(-0.113,-0.270,0.169),
+    se = c(0.130,0.126,0.079))
+  
+  mini_meta_mod <- rma(yi = cohens_d, sei = se, slab = study, data = minimeta_dataset)
+  summary(mini_meta_mod)
+
+# plot forest plot
+  aggregate <- tibble(study = "Aggregate", 
+                      cohens_d = mini_meta_mod$b, se = mini_meta_mod$se, N = sum(minimeta_dataset$N))
+
+  for_plot <- minimeta_dataset %>% 
+    bind_rows(aggregate) %>% 
+    mutate(study = factor(study, levels = c("Aggregate", "Child et al., 2018", "Bunderson, 2020", "Lua, 2023")))
+
+  ggplot(for_plot, aes(x = study, y = cohens_d, ymin = cohens_d - 1.97*se, ymax = cohens_d + 1.97*se, size = N))+
+    geom_errorbar(colour = 'darkgray', size = .5, width = .25)+
+    geom_point(data = for_plot %>%  filter(study!= "aggregate")) +
+    geom_point(data = for_plot %>%  filter(study == "aggregate"), shape = 18)+
+    coord_flip()+
+    scale_size_area()+
+    geom_hline(yintercept = 0, color = "black")+
+    theme(legend.position  =  "none")+
+    geom_vline(xintercept  =  1.5, lty = 2)+
+    labs(y = "Main effect size on original scale", x = "")
+
+```
 
 ### Summary of Replication Attempt
 
-Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+The current rescue failed to replicate the finding that individuals read quicker when positive stories are presented in the second-person perspective was not replicated. The current rescue found that there was no significant difference in reading time of passages that were written in the second- (personal) and third-person (onlooker). The mini meta-analysis (albeit preliminary and should be interpreted with caution) also suggests that there is insufficient evidence for this effect. Thus, I would conclude that the current results suggest a failed replication for now.
 
 ### Commentary
 
-Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+One notable insight from the exploratory analyses suggests that the theory behind Child et al.'s (2018) hypothesis may not be incorrect. Specifically, the hypothesis that individuals read quicker when positive stories are presented in the second-person perspective was based on the notion that "stronger empathic responses to negative information will lead to faster reading times in both perspectives" (Child et al., 2018, p.881). In the exploratory analysis, it was found that participants did not differ in their emotional responses towards passages in the different conditions. It also followed that there were no differences in their reading time across the four conditions. It could be possible that relative to the original participants in Child et al.'s (2018) study who completed the study in the lab, the rescue sample recruited on prolific were less engaged in the task. 
+
+On my end, I tried to exclude participants based on indices that could have indicated inattention (e.g., speeding through the task, spending more than 15s reading a sentence). However, these proxies may have been poor indices of inattention. It would be fruitful to examine other possible indicators of inattention to investigate if inattention may have been the cause of the replication.
+
+I was honestly shocked that the results had failed to replicate, given that the trends observed by Bunderson (2020) in the first replication was very similar to that obtained by Child et al. (2018). To rule out the possibility that my code was incorrect, I ran my code with Bunderson's data (which had similar variable names as well, given that the current study utilized the Qualtrics survey file provided by Bunderson), and the trends mimic what Bunderson had found. This suggested that the code (at least for the main effects of interest) were gravely incorrect. Thus, it could be possible that this null result was just due to the natural variation in random sampling. 
