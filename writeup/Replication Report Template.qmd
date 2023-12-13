@@ -59,6 +59,7 @@ The stimuli were presented on Qualtrics, an online survey platform. As in the or
 The links to the paradigms used can be accessed here:
 - Pilot A (Note: Passages were written in American spelling for Pilot A): [QSF file](https://github.com/psych251/child2018_rescue/blob/main/materials/child2018_pilotA.qsf), [Survey link](https://stanforduniversity.qualtrics.com/jfe/form/SV_ba0SVasU56evHy6), [Data collected](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_pilotA_October%2B29%2C%2B2023_22.37.csv)
 - Pilot B: [QSF file](https://github.com/psych251/child2018_rescue/blob/main/materials/child2018_pilotB.qsf), [Survey link](https://stanforduniversity.qualtrics.com/jfe/form/SV_da8ns38uiZ99Ouy), [Data collected](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_pilotB_December%2B3%2C%2B2023_00.04.csv)
+- Actual/ Main rescue Study: [QSF file](https://github.com/psych251/child2018_rescue/blob/main/materials/child2018_main.qsf), [Survey link](https://stanforduniversity.qualtrics.com/jfe/form/SV_6Dtx7n5AkVvBUIC?PROLIFIC_PID=NULL), [Data collected](https://github.com/psych251/child2018_rescue/blob/main/data/child2018_main_December%2B5%2C%2B2023_18.46.csv)
 
 At the very beginning of the study, participants were presented with an introduction and three practice passages created by Bunderson (the original materials for these particular materials were not accessible). To ensure the validity of the introduction and trial passages, "Feedback was obtained during piloting to ensure that the instructions and practice trials prepared participants for the task" (Bunderson, 2020).
 
@@ -409,7 +410,7 @@ ggplot(data = RT_data_graph,
   theme_minimal()
 
   # graph RT results for original replication study (Bunderson, 2020)
-  #knitr::include_graphics("")
+  knitr::include_graphics("https://github.com/psych251/child2018_rescue/blob/main/writeup/bunderson2020_RTfigure.png?raw=TRUE")
   
   # graph RT results for original study (Child et al., 2018)
   knitr::include_graphics("https://raw.githubusercontent.com/psych251/child2018_rescue/main/original_paper/child2018_figure1.png?raw=TRUE")
